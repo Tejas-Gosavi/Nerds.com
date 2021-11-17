@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ product.title }} {% endblock title %}
+
+{% block content %}
+
+<main class="container py-2 mx-auto">
+    <div class="p-md-5 p-sm-3 p-3 mb-4 bg-light mx-auto" id="{{ product.id }}">{% csrf_token %}
+        <div class="row">
+            <div class="col-xl-4 col-lg-5 col-sm-6 offset-lg-1" style="height: 500px;">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                            class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="{{ product.main_image.url }}" style="width: inherit;"
+                                alt="Image for {{ product.title | title }}" id="0" class="productImg" />
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ product.other_image1.url }}" style="width: inherit;"
+                                alt="Image for {{ product.title | title }}" id="1" />
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ product.other_image2.url }}" style="width: inherit;"
+                                alt="Image for {{ product.title | title }}" id="2" />
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-5 col-sm-5 offset-md-1">
+                <p class="fs-4 pt-0 my-0" id="productType">{{ product.comic_type.comic_type_title | title }}</p>
+                <h1 class="display-6 fw-bold" id="productTitle">{{ product.title | title }}</h1>
+                <p class="fs-4">{{ product.brand }}</p>
+                <p class="fs-4">{{ product.description }}</p>
+                &#8377;<span class="fs-4" id="productPrice">{{ product.price }}</span>
+                <p class="fs-4"></p>
+                <div class="d-grid gap-2 col-lg-8 col-sm-9">
+                    <button class="btn btn-primary addToCart" value="{{ product.id }}">Add to cart</button>
+                    {% if wishlisted %}
+                    <button class="btn btn-outline-primary addToWishlist" value="{{ product.id }}">Remove from
+                        wishlist</button>
+                    {% else %}
+                    <button class="btn btn-outline-primary addToWishlist" value="{{ product.id }}">Add to
+                        wishlist</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-xl-4 col-lg-5 col-sm-6 offset-lg-1">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td class="h5">Written by</td>
+                            <td>{{ product.written_by }}</td>
+                        </tr>
+                        <tr>
+                            <td class="h5">Art by</td>
+                            <td>{{ product.art_by }}</td>
+                        </tr>
+                        <tr>
+                            <td class="h5">Page count</td>
+                            <td>{{ product.page_count }}</td>
+                        </tr>
+                        <tr>
+                            <td class="h5">Rated</td>
+                            <td>{{ product.age_rating }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xl-6 col-lg-5 col-sm-5 offset-md-1">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td class="h5 pe-sm-1">Published on: </td>
+                            <td class="ps-sm-1">{{ product.published_date }}</a></td>
+                        </tr>
+                        <tr>
+                            <td class="h5 pe-sm-1">Tags</td>
+                            <td class="ps-sm-1">
+                                {% for tag in product.tags.all %}
+                                    <a href="{{ tag.get_absolute_url }}" style="text-decoration: none; color: #0275d8;">{{ tag.tag_title}}</a>, 
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% if product.comic_type.comic_type_title == "Single Issue" %}
+                            <tr>
+                                <td class="h5 pe-sm-1">Volume</td>
+                                <td class="ps-sm-1"><a href="{{ volume.get_absolute_url }}"
+                                        style="text-decoration: none; color: #0275d8;">{{ volume }}</a>
+                                <p class="mb-0">
+                                    {% if volume.volume_end == None %}
+                                        {{ volume.volume_start }} - Present
+                                    {% else %}
+                                        {{ volume.volume_start }} - {{ volume.volume_end }}
+                                    {% endif %}
+                                </p>    
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock content %}

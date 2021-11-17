@@ -1,0 +1,67 @@
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'comic:all_comics' %}">Nerds</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Comics</a>
+                        <div class="dropdown-menu dropdown-large">
+                            <div class="row w-md-75">
+                                <div class="col">
+                                    <h6 class="title">By Brand</h6>
+                                    <ul class="list-unstyled" aria-labelledby="navbarDropdown">
+                                        {% for brand in brands_list %}
+                                        <li><a class="dropdown-item"
+                                                href="{{ brand.get_absolute_url }}">{{ brand.brand_title }}</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="col">
+                                    <h6 class="title">By Type</h6>
+                                    <ul class="list-unstyled">
+                                        {% for comic_type in comic_type_list %}
+                                        <li><a class="dropdown-item"
+                                                href="{{ comic_type.get_absolute_url }}">{{ comic_type.comic_type_title | title }}s</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'comic:all_volumes' %}">Volumes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'comic:comics_search' %}">Search <i
+                                class="bi bi-search"></i></a>
+                    </li>
+                </ul>
+                <div class="d-flex gap-2 justify-content-md-end">
+                    {% if request.user.is_authenticated %}
+                        <a class="text-light me-md-3 me-3" href="{% url 'account:profile' %}"><i class="bi bi-person-circle"
+                                style="font-size: 1.6rem;"></i></a>
+                    {% else %}
+                        <a class="text-light me-md-3 me-3" href="{% url 'account:authenticate' %}"><i
+                                class="bi bi-person-circle" style="font-size: 1.6rem;"></i></a>
+                    {% endif %}
+                    <a class="text-light" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
+                            class="bi bi-cart" style="font-size: 1.6rem;"></i></a>
+                    <div class="navbar-icon-link-badge text-light cart-icon me-md-3 me-3" id="cartCount">
+                        {{ cart.cart.count }}</div>
+                    {% if request.user.is_authenticated %}
+                    {% csrf_token %}
+                    <a class="text-light" role="button" id="logOutBtn"><i class="bi bi-box-arrow-right"
+                            style="font-size: 1.6rem;"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

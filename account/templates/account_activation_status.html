@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %} Invalid Activation {% endblock title %}
+
+{% block content %}
+
+{% if activation %}
+    <h1 class="h4">successfully activated account, Now go nerd...</h1>
+{% else %}
+    <h1 class="h4">Sorry invalid activation, contact us</h1>
+{% endif %}
+
+{% endblock content %}

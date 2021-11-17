@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mathfilters %}
+
+{% block title %} {{ order.order_id }} {% endblock title %}
+
+{% block content %}
+    {% if order.payment_status == 1 %}
+        <div class="alert alert-dismissible alert-warning">
+             <strong class="alert-text">Payment Pending</strong>
+        </div>
+    {% elif order.payment_status == 2 %}
+        <div class="alert alert-dismissible alert-success">
+            <strong class="alert-text">Payment Done</strong>
+        </div>
+    {% else %}
+        <div class="alert alert-dismissible alert-danger">
+            <strong class="alert-text">Payment Failed</strong>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-6 col-12 offset-lg-1">
+            {% for product in order.comic.all %}
+                <div class="row py-1">
+                    <div class="col-md-3 col-5">
+                        <img src="/media/{{ product.main_image }}" id="product-img" alt="product"
+                            style="height: 200px; width: 120px;">
+                    </div>
+                    <div class="col-lg-8 col-7 ps-md-3 ps-4">
+                        <div class="row">
+                            <div class="col-lg-10 col-10">
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <h6 id="product-title">{{ product.title }}</h6>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <h6 id="product-price">&#8377;{{ product.price }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-lg-5 col">
+                <div class="row">
+                    <div class="col-12 mt-1">
+                        <div class="card">
+                            <h3 class="card-header">Order Summary</h3>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center border-0">
+                                        Subtotal <span clas="text-end">&#8377;<span>{{ order.total|sub:order.delivery_charges }}</span></span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center border-0">
+                                        Delivery charges <span clas="text-end">&#8377;<span>{{ order.delivery_charges }}</span></span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-footer py-2 bg-light border-0 border-top">
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center border-0">
+                                        Total <span class="text-end">&#8377;<span>{{ order.total }}</span></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+{% endblock content %}

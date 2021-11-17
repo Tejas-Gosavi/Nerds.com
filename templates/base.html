@@ -1,0 +1,42 @@
+<!doctype html>
+{% load static %}
+{% load widget_tweaks %}
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous">
+	</script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch/dist/lux/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+	<title>{% block title %} {% endblock title %}</title>
+</head>
+
+<body class="pb-0">
+	{% block navbar %}{% include 'navbar.html' %}{% endblock navbar %}
+
+	{% block cart %}{% include 'cart.html' %}{% endblock cart %}
+
+	<main class="container pt-4">
+		<div class="pt-5" id="content">
+			<div id="alert" hidden>
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				<strong class="alert-text"></strong>
+			</div>
+			{% block content %}{% endblock content %}
+		</div>
+	</main>
+
+	<!-- {% block footer %}{% include 'footer.html' %}{% endblock footer %} -->
+
+	{% block script %}{% endblock script %}
+	<script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

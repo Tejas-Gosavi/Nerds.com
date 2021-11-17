@@ -1,0 +1,10 @@
+{% autoescape off %}
+<div class="row">
+    <div class="col text=center mx-auto">
+        <p>Hey nerd,</p>
+        <p>Your account has successfully created, click below link to activate your account and log in</p>
+        <p class="text-info">http://{{ domain }}{% url 'account:activate' uidb64=uid token=token %}</p>
+        
+    </div>
+</div>
+{% endautoescape %}

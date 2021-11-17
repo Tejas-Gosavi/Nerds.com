@@ -1,0 +1,444 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{ request.user }} {% endblock title %}
+
+{% block content %}
+
+<div class="row">
+	<div
+		class="col-md-2 col-sm-3 col-10 offset-sm-0 offset-1 d-flex flex-column p-0 bg-secondary text-center dataBtnGroup">
+		<!-- <a href="#profile" class="btn btn-dark dataBtn" role="button" id="profileBtn">Profile</a>
+		<a href="#address" class="btn dataBtn" role="button" id="addressBtn">Address</a>
+		<a href="#orders" class="btn dataBtn" role="button" id="ordersBtn">Orders</a>
+		<a href="#payments" class="btn dataBtn" role="button" id="paymentsBtn">Payments</a>
+		<a href="#wishlist" class="btn dataBtn" role="button" id="wishlistBtn">Wishlist</a> -->
+
+		<button class="btn btn-dark dataBtn w-100" role="button" id="profileBtn">Profile</button>
+		<button class="btn dataBtn w-100" role="button" id="addressBtn">Address</button>
+		<button class="btn dataBtn w-100" role="button" id="ordersBtn">Orders</button>
+		<button class="btn dataBtn w-100" role="button" id="wishlistBtn">Wishlist</button>
+	</div>
+	<div
+		class="col-md-10 col-sm-9 col-10 offset-sm-0 offset-1 d-flex flex-column ps-md-5 ps-sm-4 ps-0 pt-sm-0 pt-4 dataGroup">
+		<div id="profile">
+			<div class="form-group mb-5">
+				<legend>Personal Data</legend>
+				<div class="row">
+					<div class="col">
+						<label for="firstName" class="col-form-label py-1">First Name</label>
+						<input type="text" class="form-control" placeholder="First name" aria-label="First name"
+							value="{{ user.first_name }}" id="firstName">
+						<div class="invalid-text firstName">First name can't be empty</div>
+					</div>
+					<div class="col">
+						<label for="lastName" class="col-form-label py-1">Last Name</label>
+						<input type="text" class="form-control" placeholder="Last name" aria-label="Last name"
+							value="{{ user.last_name }}" id="lastName">
+						<div class="invalid-text lastName">Last name can't be empty</div>
+					</div>
+				</div>
+				<div class="row pt-3">
+					<div class="col">
+						<label for="phoneNumber" class="col-form-label py-1">Phone Number</label>
+						<input type="text" class="form-control" placeholder="Phone Number" aria-label="Phone Number"
+							value="{{ user.phone_number }}" id="phoneNumber">
+						<div class="invalid-text phoneNumber">Phone number can't be empty</div>
+					</div>
+					<div class="col align-items-end d-flex">
+						<button class="btn btn-dark w-100" id="savePersonalData">Save changes</button>
+					</div>
+				</div>
+			</div>
+			<div class="form-group mt-5">
+				<legend>Change Password</legend>
+				<div class="row">
+					<div class="col">
+						<label for="oldPassword" class="col-form-label py-1">Old Password</label>
+						<input type="text" class="form-control" placeholder="Old Password" aria-label="Old Password"
+							id="oldPassword">
+						<div class="invalid-oldPassword">Your old password was entered incorrectly.</div>
+						<div class="invalid-text oldPassword">Old password can't be empty</div>
+					</div>
+				</div>
+				<div class="row pt-3">
+					<div class="col">
+						<label for="newPassword" class="col-form-label pt-1">New Password</label>
+						<input type="text" class="form-control" placeholder="New Password" aria-label="New Password"
+							id="newPassword">
+						<div class="invalid-newPassword">The New password is too similar to the username.</div>
+						<div class="invalid-newPassword2">This New password is too short. It must contain at least 8
+							characters.</div>
+						<div class="invalid-newPassword3">The two New passwords fields didn't match.</div>
+						<div class="invalid-text newPassword">New password can't be empty</div>
+					</div>
+					<div class="col">
+						<label for="newPassword2" class="col-form-label pt-1">Retype New Password</label>
+						<input type="text" class="form-control" placeholder="Retype New Password"
+							aria-label="Retype New Password" id="newPassword2">
+						<div class="invalid-text newPassword2">Retyped Password can't be empty</div>
+					</div>
+				</div>
+				<div class="row pt-4">
+					<div class="col">
+						<button class="btn btn-dark" id="saveChangePassword">Save</button>
+					</div>
+				</div>
+			</div>
+			<div class="form-group mt-5">
+				<legend>Delete Account</legend>
+				<div class="row">
+					<label>Are you sure you want to delete your account?</label>
+					<div class="col py-3">
+						<button class="btn btn-outline-danger" id="deleteAccount">Delete</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="address" hidden>
+			<div class="form-group">
+				<legend>Shipping Address</legend>
+				<div class="row">
+					<div class="col">
+						<label for="buildingName" class="col-form-label pt-0 pb-1">Building Address</label>
+						<input type="text" class="form-control" placeholder="Building Address"
+							aria-label="Building Address" value="{{ user.building_name }}" id="buildingName">
+						<div class="invalid-text buildingName">Building address can't be empty</div>
+					</div>
+					<div class="col">
+						<label for="streetName" class="col-form-label pt-0 pb-1">Street Name</label>
+						<input type="text" class="form-control" placeholder="Street Name" aria-label="Street Name"
+							value="{{ user.street_name }}" id="streetName">
+						<div class="invalid-text streetName">Street name can't be empty</div>
+					</div>
+				</div>
+				<div class="row pt-3">
+					<div class="col">
+						<label for="landmark" class="col-form-label pt-0 pb-1">Landmark</label>
+						<input type="text" class="form-control" placeholder="Landmark" aria-label="Landmark"
+							value="{{ user.landmark }}" id="landmark">
+						<div class="invalid-text landmark">Landmark can't be empty</div>
+					</div>
+					<div class="col">
+						<label for="townCity" class="col-form-label pt-0 pb-1">Town/City</label>
+						<input type="text" class="form-control" placeholder="Town/City" aria-label="Town/City"
+							value="{{ user.town_city }}" id="townCity">
+						<div class="invalid-text townCity">Town/City can't be empty</div>
+					</div>
+				</div>
+				<div class="row pt-3">
+					<div class="col">
+						<div id="userState" hidden>{{ user.state }}</div>
+						<label for="state" class="col-form-label pt-0 pb-1">State</label>
+						<select class="form-control" id="state">
+							<option value="" selected>Select State</option>
+							<option value="AndraPradesh">Andra Pradesh</option>
+							<option value="ArunachalPradesh">Arunachal Pradesh</option>
+							<option value="Assam">Assam</option>
+							<option value="Bihar">Bihar</option>
+							<option value="Chhattisgarh">Chhattisgarh</option>
+							<option value="Goa">Goa</option>
+							<option value="Gujarat">Gujarat</option>
+							<option value="Haryana">Haryana</option>
+							<option value="HimachalPradesh">Himachal Pradesh</option>
+							<option value="JammuKashmir">Jammu and Kashmir</option>
+							<option value="Jharkhand">Jharkhand</option>
+							<option value="Karnataka">Karnataka</option>
+							<option value="Kerala">Kerala</option>
+							<option value="MadhyaPradesh">Madya Pradesh</option>
+							<option value="Maharashtra">Maharashtra</option>
+							<option value="Manipur">Manipur</option>
+							<option value="Meghalaya">Meghalaya</option>
+							<option value="Mizoram">Mizoram</option>
+							<option value="Nagaland">Nagaland</option>
+							<option value="Odisha">Orissa</option>
+							<option value="Punjab">Punjab</option>
+							<option value="Rajasthan">Rajasthan</option>
+							<option value="Sikkim">Sikkim</option>
+							<option value="TamilNadu">Tamil Nadu</option>
+							<option value="Telangana">Telangana</option>
+							<option value="Tripura">Tripura</option>
+							<option value="Uttarakhand">Uttarakhand</option>
+							<option value="UttarPradesh">Uttar Pradesh</option>
+							<option value="WestBengal">West Bengal</option>
+							<option disabled style="background-color:#aaa; color:#fff">UNION Territories</option>
+							<option value="AndamanNicobar">Andaman and Nicobar Islands</option>
+							<option value="Chandigarh">Chandigarh</option>
+							<option value="DadraHaveli">Dadar and Nagar Haveli</option>
+							<option value="DamanDiu">Daman and Diu</option>
+							<option value="Delhi">Delhi</option>
+							<option value="Lakshadweep">Lakshadweep</option>
+							<option value="Pondicherry">Pondicherry</option>
+						</select>
+						<div class="invalid-text state">State can't be empty</div>
+					</div>
+					<div class="col">
+						<div id="userDistrict" hidden>{{ user.district }}</div>
+						<label for="district" class="col-form-label pt-0 pb-1">District</label>
+						<select class="form-control" id="district">
+							<option value="" selected>Select District</option>
+						</select>
+						<div class="invalid-text district">District can't be empty</div>
+					</div>
+				</div>
+				<div class="row pt-4">
+					<div class="col">
+						<button class="btn btn-dark" id="saveShippingAddress">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="orders" hidden>
+			<div class="form-group">
+				<legend>Orders</legend>
+				{% if orders %}
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Order ID</th>
+								<th scope="col">Payment ID</th>
+								<th scope="col">Total</th>
+								<th scope="col">Delivery Charges</th>
+								<th scope="col">Payment Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for order in orders %}
+							<tr>
+								<td>{{ forloop.counter }}</td>
+								<td> <a href="{{ order.get_absolute_url }}"
+										style="text-decoration: none; color: #0275d8;">{{ order.order_id }}</a></td>
+								<td>{{ order.payment_id }}</td>
+								<td>{{ order.total }}</td>
+								<td>{{ order.delivery_charges }}</td>
+								{% if order.payment_status == 1 %}
+								<td> <i class="bi bi-circle-fill text-warning"></i></td>
+								{% elif order.payment_status == 2 %}
+								<td><i class="bi bi-circle-fill text-success"></i></td>
+								{% else %}
+								<td><i class="bi bi-circle-fill text-danger"></i></td>
+								{% endif %}
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				{% else %}
+				<p class="text-center">Nothing here <i class="bi bi-emoji-frown"></i></p>
+				{% endif %}
+			</div>
+		</div>
+		<div id="wishlist" hidden>
+			<div class="form-group">
+				<legend>Wishlist</legend>
+				{% if wishlist %}
+				<div class="row row-cols-lg-4 row-cols-md-3 row-cols-2 g-3 pb-3" id="wishlists-all">
+					{% for product in wishlist %}
+					<div class="col d-flex align-items-stretch" id="{{ product.id }}">
+						<div class="card border-0 shadow-sm">
+							<img src="{{ product.main_image.url }}" class="card-img-top rounded-0 productImg"
+								alt="Image for {{ product.title | title }}">
+							<div class="card-body rounded-0 bg-light">
+								<h6 class="card-subtitle text-muted pt-0 pb-2" id="productType">
+									{{ product.brand.title }}</h6>
+								<h6 class="card-subtitle" style="height: 30px;"><a href="{{ product.get_absolute_url }}"
+										id="productTitle"
+										style="text-decoration: none;">{{ product.title | title | truncatewords:8 }}</a>
+								</h6>
+								<div class="card-text pt-3">
+									<h5 class="text-end">&#8377;<span id="productPrice">{{ product.price }}</span></h5>
+									<button class="btn btn-dark w-100 p-lg-2 p-sm-1 p-1 addToCart"
+										value="{{ product.id }}">Add to cart</button>
+									<button
+										class="btn btn-outline-danger w-100 mt-2 p-lg-2 p-sm-1 p-1 addToWishlist fromList"
+										value="{{ product.id }}">Remove</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				{% else %}
+				<p class="text-center">Nothing here <i class="bi bi-emoji-frown"></i></p>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+	var currentDataBtn = "profile";
+	$(".dataBtn").click(function () {
+		if (currentDataBtn !== $(this).attr("id").slice(0, -3)) {
+			$("#" + currentDataBtn + "Btn").removeClass("btn-dark");
+			$("#" + currentDataBtn).attr("hidden", true);
+
+			$(this).addClass("btn-dark");
+			currentDataBtn = $(this).attr("id").slice(0, -3);
+
+			$(".dataGroup #" + currentDataBtn).attr("hidden", false);
+		}
+	});
+
+	$("#deleteAccount").click(function () {
+		$.ajax({
+			type: "POST",
+			url: "/account/delete",
+			data: {
+				csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+			},
+			dataType: "json",
+			success: function (response) {
+				if (response.deleteAccountCode == 0) {
+					window.location.reload();
+				}
+			}
+		});
+	});
+
+	$("#savePersonalData").click(function () {
+		let firstName = $("#profile #firstName").val();
+		let lastName = $("#profile #lastName").val();
+		let phoneNumber = $("#profile #phoneNumber").val();
+
+		clearInitialCSS("savePersonalData");
+
+		if (firstName === "") {
+			$("#profile .firstName").show();
+			$("#profile #firstName").addClass("invalid");
+		} else if (lastName === "") {
+			$("#profile .lastName").show();
+			$("#profile #lastName").addClass("invalid");
+		} else if (phoneNumber === "") {
+			$("#profile .phoneNumber").show();
+			$("#profile #phoneNumber").addClass("invalid");
+		} else {
+			$.ajax({
+				type: "POST",
+				url: "http://127.0.0.1:8000/account/save_perosnal_data",
+				data: {
+					firstName: firstName,
+					lastName: lastName,
+					phoneNumber: phoneNumber,
+					csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+				},
+				dataType: "json",
+				success: function (response) {
+					if (response.savePerosnalDataCode == 0) {
+						addMessage("alert-success", "Personal Data saved");
+					}
+				}
+			});
+		}
+	});
+
+	$("#saveChangePassword").click(function () {
+		let oldPassowrd = $("#profile #oldPassword").val();
+		let newPassowrd = $("#profile #newPassword").val();
+		let newPassowrd2 = $("#profile #newPassword2").val();
+
+		clearInitialCSS("saveChangePassword");
+
+		if (oldPassowrd === "") {
+			$("#profile .oldPassword").show();
+			$("#profile #oldPassword").addClass("invalid");
+		} else if (newPassowrd === "") {
+			$("#profile .newPassword").show();
+			$("#profile #newPassword").addClass("invalid");
+		} else if (newPassowrd2 === "") {
+			$("#profile .newPassword2").show();
+			$("#profile #newPassword2").addClass("invalid");
+		} else {
+			$.ajax({
+				type: "POST",
+				url: "/account/save_change_password",
+				data: {
+					old_password: oldPassowrd,
+					new_password1: newPassowrd,
+					new_password2: newPassowrd2,
+					csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+				},
+				dataType: "json",
+				success: function (response) {
+					if (response.changePasswordCode == 1) {
+						console.log(response.changePasswordCode);
+						$("#profile .invalid-oldPassword").show();
+						$("#profile #oldPassword").addClass("invalid");
+					} else if (response.changePasswordCode == 2) {
+						console.log(response.changePasswordCode);
+						$("#profile .invalid-newPassword").show();
+						$("#profile #newPassword").addClass("invalid");
+					} else if (response.changePasswordCode == 3) {
+						console.log(response.changePasswordCode);
+						$("#profile .invalid-newPassword2").show();
+						$("#profile #newPassword").addClass("invalid");
+					} else if (response.changePasswordCode == 4) {
+						console.log(response.changePasswordCode);
+						$("#profile .invalid-newPassword3").show();
+						$("#profile #newPassword").addClass("invalid");
+						$("#profile #newPassword2").addClass("invalid");
+					} else {
+						addMessage("alert-success", "Password changed");
+					}
+				}
+			});
+		}
+	});
+
+	$("#saveShippingAddress").click(function () {
+		let building_name = $("#address #buildingName").val();
+		let street_name = $("#address #streetName").val();
+		let landmark = $("#address #landmark").val();
+		let town_city = $("#address #townCity").val();
+		let state = $("#address #state").val();
+		let district = $("#address #district").val();
+
+		clearInitialCSS("saveShippingAddress");
+
+		if (building_name === "") {
+			$("#address .buildingName").show();
+			$("#address #buildingName").addClass("invalid");
+		} else if (street_name === "") {
+			$("#address .streetName").show();
+			$("#address #streetName").addClass("invalid");
+		} else if (landmark === "") {
+			$("#address .landmark").show();
+			$("#address #landmark").addClass("invalid");
+		} else if (town_city === "") {
+			$("#address .townCity").show();
+			$("#address #townCity").addClass("invalid");
+		} else if (state === "") {
+			$("#address .state").show();
+			$("#address #state").addClass("invalid");
+		} else if (district === "") {
+			$("#address .district").show();
+			$("#address #district").addClass("invalid");
+		} else {
+			$.ajax({
+				type: "POST",
+				url: "/account/save_shipping_address",
+				data: {
+					building_name: building_name,
+					street_name: street_name,
+					landmark: landmark,
+					town_city: town_city,
+					state: state,
+					district: district,
+					csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+				},
+				dataType: "json",
+				success: function (response) {
+					if (response.shippingAddressCode == 0) {
+						addMessage("alert-success", "Address saved");
+					}
+				}
+			});
+		}
+	});
+</script>
+<script src="{% static 'js/stateDistrict.js' %}"></script>
+{% endblock script %}

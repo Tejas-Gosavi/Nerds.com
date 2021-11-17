@@ -1,0 +1,10 @@
+{% autoescape off %}
+<div class="row">
+    <div class="col text=center mx-auto">
+        <p>Hey {{ user.first_name }} {{ user.last_name }}, </p>
+        <p>Payment is successfully done for order  <a href="http://127.0.0.1:8000{{ order.get_absolute_url }}" style="text-decoration: none; font-weight: bold;">{{ order.order_id }}</a></p>
+        <p>Your order is on the way...and will be deliverd to you as soon as possible.</p>
+        <p>Thank you for your business and your trust.</p>
+    </div>
+</div>
+{% endautoescape %}
