@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 
-from .filters import ComicsFilter
+from .filters import ComicsFilter, VolumesFilter
 from .models import Annual, Brand, Comic, ComicType, Individual, Single, Tag, Volume
 
 
@@ -21,10 +21,13 @@ def all_volumes(request):
     context = {}
 
     # get all volumes which are active/available and return them in context
-    volumes = Volume.objects.all()
+    volumes = Volume.objects.filter(is_active=True)
+
+    # create filter/search based on request data
+    volumes_filter = VolumesFilter(request.GET, queryset=volumes)
 
     # if no volumes present then
-    if not volumes:
+    if not volumes_filter.qs:
 
         # return 404 error page
         context["error"] = "Volumes you are requesting not found!"
@@ -32,9 +35,9 @@ def all_volumes(request):
 
     # else return them in context
     else:
-        context["products"] = volumes
-        context["type"] = "volumes"
-        return render(request, "home.html", context=context)
+        context["search_form"] = volumes_filter
+        context["products"] = volumes_filter.qs
+        return render(request, "volumes_search.html", context=context)
 
 
 def comics_brand(request, brand_slug):

@@ -9,7 +9,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Comics</a>
+                        <a class="nav-link dropdown-toggle ps-sm-0 ps-3" href="#" data-bs-toggle="dropdown">Comics</a>
                         <div class="dropdown-menu dropdown-large">
                             <div class="row w-md-75">
                                 <div class="col">
@@ -20,9 +20,11 @@
                                                 href="{{ brand.get_absolute_url }}">{{ brand.brand_title }}</a>
                                         </li>
                                         {% endfor %}
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{% url 'comic:comics_search' %}">Any many more...</a>
                                     </ul>
                                 </div>
-                                <div class="col">
+                                <div class="col pt-sm-0 pt-3">
                                     <h6 class="title">By Type</h6>
                                     <ul class="list-unstyled">
                                         {% for comic_type in comic_type_list %}
@@ -36,10 +38,10 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'comic:all_volumes' %}">Volumes</a>
+                        <a class="nav-link ps-sm-0 ps-3" href="{% url 'comic:all_volumes' %}">Volumes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'comic:comics_search' %}">Search <i
+                        <a class="nav-link ps-sm-0 ps-3" href="{% url 'comic:comics_search' %}">Search <i
                                 class="bi bi-search"></i></a>
                     </li>
                 </ul>

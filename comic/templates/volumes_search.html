@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %} Search {% endblock title %}
+
+{% block content %}
+<form action="" method="GET">
+    {% comment %} {{ search_form.form }} {% endcomment %}
+    <div class="row">
+        <div class="col-lg-4 pb-lg-0 col-md-12 pb-3">
+            <div class="form-group">
+                {% render_field search_form.form.volume_title__icontains class+="form-control" placeholder="Volume Title, keyword, etc" %}
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group form-group">
+                <div class="input-group-text"><i class="bi bi-calendar3"></i></div>
+                {% render_field search_form.form.volume_start__gte class+="form-control" placeholder="Start year" %}
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group form-group">
+                <div class="input-group-text"><i class="bi bi-calendar3"></i></div>
+                {% render_field search_form.form.volume_end__lte class+="form-control" placeholder="End year" %}
+            </div>
+        </div>
+    </div>
+    <div class="row pt-3">
+        <div class="col">
+            <div class="form-group">
+                {% render_field search_form.form.brand class+="form-control" %}
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="row row-cols-lg-5 row-cols-md-4 row-cols-sm-3 row-cols-2 g-3 pt-5">
+    {% for product in products %}
+    {% comment %} <div class="col d-flex align-items-stretch">
+        <div class="card border-0 shadow-sm">
+            <img src="{{ product.volume_main_image.url }}" class="card-img-top rounded-0"
+                alt="Image for {{ product.title | title }}">
+            <div class="card-body rounded-0 bg-light">
+                <h6 class="card-subtitle text-muted pt-0 pb-2">{{ product.brand.brand_title }}</h6>
+                <h6 class="card-subtitle" style="height: 20px;"><a href="{{ product.get_absolute_url }}"
+                        style="text-decoration: none;">{{ product.volume_title | title | truncatewords:8 }}</a></h6>
+                <div class="card-text">
+                    <span>{{ product.volume_start }} -
+                        {% if product.volume_end == None %}
+                        <span>Present</span>
+                        {% else %}
+                        <span>{{ product.volume_end }}</span>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div> {% endcomment %}
+    {% endfor %}
+
+    <table class="table table-borderless table-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Title</th>
+                <th>Brand</th>
+                <th>Starting year</th>
+                <th>Ending year</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td><a href="{{ product.get_absolute_url }}"
+                    style="text-decoration: none; color: #0275d8;">{{ product.volume_title }}</a></td>
+                <td>{{ product.brand }}</td>
+                <td>{{ product.volume_start }}</td>
+                <td>{% if product.volume_end == None %}
+                        Present
+                    {% else %}
+                        {{ product.volume_end }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $("#id_brand")[0][0].text = "Choose Brand";
+    });
+</script>
+{% endblock script %}
