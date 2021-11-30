@@ -21,6 +21,16 @@ class Tag(models.Model):
     def __str__(self):
         return self.tag_title
 
+class Talent(models.Model):
+    name = models.CharField(max_length=50, blank=True)
+
+    class Meta:
+        verbose_name = _("Creator")
+        verbose_name_plural = _("Creators")
+
+    def __str__(self):
+        return self.name
+
 
 class Brand(models.Model):
     brand_title = models.CharField(
@@ -76,30 +86,14 @@ class ComicType(models.Model):
         return self.comic_type_title
 
 
-def volume_images_directory_path(instance, filename):
-    fileExt = filename.split(".")[-1]
-    return "/".join(
-        [
-            "images",
-            instance.brand.brand_slug,
-            "volumes",
-            instance.volume_slug,
-            instance.volume_slug + "." + fileExt,
-        ]
-    )
-
-
 class Volume(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     volume_title = models.CharField(
-        verbose_name=_("Volume Name"),
+        verbose_name=_("Volume/Series Name"),
         max_length=255,
     )
     volume_slug = models.SlugField(
-        verbose_name=_("Volume Slug"), max_length=50, unique=True
-    )
-    volume_main_image = models.ImageField(
-        upload_to=volume_images_directory_path,
+        verbose_name=_("Volume/Series Slug"), max_length=50, unique=True
     )
     volume_start = models.IntegerField(
         null=True,
@@ -120,8 +114,8 @@ class Volume(models.Model):
     is_active = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = _("Volume")
-        verbose_name_plural = _("Volumes")
+        verbose_name = _("Volume/Series")
+        verbose_name_plural = _("Volumes/Series")
 
     def get_absolute_url(self):
         return reverse("comic:comics_volume", args={self.volume_slug})
@@ -150,21 +144,30 @@ AGE_RATING = (("13+", "13+"), ("15+", "15+"), ("18+", "18+"))
 class Comic(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     comic_type = models.ForeignKey(ComicType, on_delete=models.CASCADE)
+    volume = models.ForeignKey(Volume, on_delete=models.CASCADE, null=True, blank=True)
 
     title = models.CharField(
         verbose_name=_("Name"),
         max_length=50,
     )
     slug = models.SlugField(verbose_name=_("Slug"), max_length=50, unique=True)
-    main_image = models.ImageField(upload_to=comic_images_directory_path)
-    other_image1 = models.ImageField(upload_to=comic_images_directory_path, blank=True)
-    other_image2 = models.ImageField(upload_to=comic_images_directory_path, blank=True)
+    main_image = models.ImageField(upload_to=comic_images_directory_path, max_length=500)
+    other_image1 = models.ImageField(upload_to=comic_images_directory_path, blank=True, max_length=500)
+    other_image2 = models.ImageField(upload_to=comic_images_directory_path, blank=True, max_length=500)
 
     detail = models.TextField(blank=True)
     price = models.IntegerField()
     published_date = models.DateField(blank=True)
-    written_by = models.CharField(max_length=50, blank=True)
-    art_by = models.CharField(max_length=50, blank=True)
+    year = models.IntegerField(
+        null=True,
+        blank=True,
+        validators=[
+            MinValueValidator(1900),
+            MaxValueValidator(datetime.date.today().year),
+        ],
+    )
+    written_by = models.ManyToManyField(Talent, related_name="All_Writers")
+    art_by = models.ManyToManyField(Talent, related_name="All_Artists")
     page_count = models.IntegerField(blank=True)
     age_rating = models.CharField(max_length=5, choices=AGE_RATING, blank=True)
 
@@ -194,30 +197,7 @@ class Comic(models.Model):
     def __str__(self):
         return self.title
 
-
-class Single(Comic):
-    volume = models.ForeignKey(Volume, on_delete=models.CASCADE)
-
+class OneShot(Comic):
     class Meta:
-        verbose_name = _("Single")
-        verbose_name_plural = _("Single Issues")
-
-
-class Individual(Comic):
-    class Meta:
-        verbose_name = _("Individual")
-        verbose_name_plural = _("Individual Issues")
-
-
-class Annual(Comic):
-    year = models.IntegerField(
-        null=True,
-        validators=[
-            MinValueValidator(1900),
-            MaxValueValidator(datetime.date.today().year),
-        ],
-    )
-
-    class Meta:
-        verbose_name = _("Annual")
-        verbose_name_plural = _("Annual Issues")
+        verbose_name = _("One Shot")
+        verbose_name_plural = _("One Shot Issues")

@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 
 from .filters import ComicsFilter, VolumesFilter
-from .models import Annual, Brand, Comic, ComicType, Individual, Single, Tag, Volume
+from .models import Brand, Comic, ComicType, Tag, Volume
 
 
 def all_comics(request):
@@ -109,11 +109,11 @@ def comics_detail(request, **kwargs):
         if comic.wishlist_by.filter(id=request.user.id).exists():
             context["wishlisted"] = True
 
-    # if comic type is single issue then
-    if kwargs.get("comic_type_slug") == "single-issue":
+    # if comic is part of volume/series then
+    if comic.volume != None:
 
-        # get volume info of that single issue
-        volume = Single.objects.get(slug=kwargs.get("slug")).volume
+        # get volume/series info of that comic
+        volume = Comic.objects.get(slug=kwargs.get("slug")).volume
         context["volume"] = volume
 
     # return them in context
@@ -124,7 +124,7 @@ def comics_volume(request, volume_slug):
     context = {}
 
     # get all comics of respective volume, which are active/available
-    comics = Single.objects.filter(volume__volume_slug=volume_slug, is_active=True)
+    comics = Comic.objects.filter(volume__volume_slug=volume_slug, is_active=True)
 
     # if no comics present of respective volume then
     if not comics:

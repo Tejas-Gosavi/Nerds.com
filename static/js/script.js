@@ -59,7 +59,7 @@ $(document).ready(function () {
 
     });
     $(".cartRemove").click(function () {
-        productId = $(this).attr("id").slice(-1);
+        productId = $(this).attr("id").slice(7);
         product = $("#cartList").find('#' + productId);
 
         $.ajax({

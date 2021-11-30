@@ -47,7 +47,7 @@
                 <p class="fs-4 pt-0 my-0" id="productType">{{ product.comic_type.comic_type_title | title }}</p>
                 <h1 class="display-6 fw-bold" id="productTitle">{{ product.title | title }}</h1>
                 <p class="fs-4">{{ product.brand }}</p>
-                <p class="fs-4">{{ product.description }}</p>
+                <p class="fs-5">{{ product.detail }}</p>
                 &#8377;<span class="fs-4" id="productPrice">{{ product.price }}</span>
                 <p class="fs-4"></p>
                 <div class="d-grid gap-2 col-lg-8 col-sm-9">
@@ -64,16 +64,22 @@
         </div>
         <hr>
         <div class="row">
-            <div class="col-xl-4 col-lg-5 col-sm-6 offset-lg-1">
+            <div class="col-xl-5 col-lg-5 col-sm-6">
                 <table class="table">
                     <tbody>
                         <tr>
                             <td class="h5">Written by</td>
-                            <td>{{ product.written_by }}</td>
+                            <td>{% for talent in product.written_by.all %}
+                                    <span>{{ talent.name }}</span>, 
+                                {% endfor %}
+                            </td>
                         </tr>
                         <tr>
                             <td class="h5">Art by</td>
-                            <td>{{ product.art_by }}</td>
+                            <td>{% for talent in product.art_by.all %}
+                                    <span>{{ talent.name }}</span>, 
+                                {% endfor %}
+                            </td>
                         </tr>
                         <tr>
                             <td class="h5">Page count</td>
@@ -86,12 +92,12 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-xl-6 col-lg-5 col-sm-5 offset-md-1">
+            <div class="col-xl-7 col-lg-5 col-sm-5">
                 <table class="table">
                     <tbody>
                         <tr>
                             <td class="h5 pe-sm-1">Published on: </td>
-                            <td class="ps-sm-1">{{ product.published_date }}</a></td>
+                            <td class="ps-sm-1">{{ product.published_date }}</td>
                         </tr>
                         <tr>
                             <td class="h5 pe-sm-1">Tags</td>
@@ -101,9 +107,9 @@
                                 {% endfor %}
                             </td>
                         </tr>
-                        {% if product.comic_type.comic_type_title == "Single Issue" %}
+                        {% if product.volume != None %}
                             <tr>
-                                <td class="h5 pe-sm-1">Volume</td>
+                                <td class="h5 pe-sm-1">Volume/Series</td>
                                 <td class="ps-sm-1"><a href="{{ volume.get_absolute_url }}"
                                         style="text-decoration: none; color: #0275d8;">{{ volume }}</a>
                                 <p class="mb-0">

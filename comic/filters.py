@@ -14,6 +14,7 @@ class ComicsFilter(django_filters.FilterSet):
             "price": ["lte", "gte"],
         }
 
+
 class VolumesFilter(django_filters.FilterSet):
     class Meta:
         model = Volume
