@@ -1,6 +1,7 @@
 from io import BytesIO
 
 import razorpay
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse, JsonResponse
@@ -89,7 +90,7 @@ def pay(request):
         amount = int(request.POST["total"])
         delivery_charges = int(request.POST["deliveryOption"])
         client = razorpay.Client(
-            auth=("rzp_test_l6Uqui0w9OG5Lh", "CrKebbX9r8AOR2ZzoRwpBCIc")
+            auth=(settings.RAZORPAY_ID, settings.RAZORPAY_SECRET_KEY)
         )
         data = {"amount": amount * 100, "currency": "INR", "payment_capture": "1"}
         razorpayOrder = client.order.create(data=data)
@@ -122,6 +123,7 @@ def pay(request):
         _ = request.session.pop("sessionKey")
 
         context = razorpayOrder
+        print(razorpayOrder)
         context["callback_url"] = (
             "http://" + str(get_current_site(request)) + "/cart/paymentStatus"
         )
@@ -160,12 +162,13 @@ def paymentStatus(request):
     if "error" in request.POST:
 
         # order payment is failed
-        order.PAYMENT_STATUS_CHOICES = 3
+        order.payment_status = 3
         order.save()
+
+    # else payment is successed
     else:
 
-        # order payment is successed
-        order.PAYMENT_STATUS_CHOICES = 2
+        order.payment_status = 2
         order.save()
 
         # email user about payment
@@ -179,9 +182,9 @@ def paymentStatus(request):
             },
         )
         user.email_user(subject=subject, message=message)
-
-        # redirect to order
-        return redirect(order)
+    
+    # redirect to order
+    return redirect(order)
 
 
 # Igonre code below

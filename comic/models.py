@@ -22,7 +22,7 @@ class Tag(models.Model):
         return self.tag_title
 
 class Talent(models.Model):
-    name = models.CharField(max_length=50, blank=True)
+    name = models.CharField(max_length=50, blank=True, unique=True)
 
     class Meta:
         verbose_name = _("Creator")
@@ -158,16 +158,9 @@ class Comic(models.Model):
     detail = models.TextField(blank=True)
     price = models.IntegerField()
     published_date = models.DateField(blank=True)
-    year = models.IntegerField(
-        null=True,
-        blank=True,
-        validators=[
-            MinValueValidator(1900),
-            MaxValueValidator(datetime.date.today().year),
-        ],
-    )
-    written_by = models.ManyToManyField(Talent, related_name="All_Writers")
-    art_by = models.ManyToManyField(Talent, related_name="All_Artists")
+    
+    written_by = models.ManyToManyField(Talent, blank=True, related_name="All_Writers")
+    art_by = models.ManyToManyField(Talent, blank=True, related_name="All_Artists")
     page_count = models.IntegerField(blank=True)
     age_rating = models.CharField(max_length=5, choices=AGE_RATING, blank=True)
 
@@ -180,7 +173,7 @@ class Comic(models.Model):
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
 
     class Meta:
-        ordering = ("-created_at",)
+        ordering = ("-published_date",)
         verbose_name = _("Comic")
         verbose_name_plural = _("Comics")
 

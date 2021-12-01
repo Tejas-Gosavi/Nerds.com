@@ -71,13 +71,17 @@
                             <td class="h5">Written by</td>
                             <td>{% for talent in product.written_by.all %}
                                     <span>{{ talent.name }}</span>, 
+                                {% empty %}
+                                    <span>Not Available</span> 
                                 {% endfor %}
                             </td>
                         </tr>
                         <tr>
                             <td class="h5">Art by</td>
                             <td>{% for talent in product.art_by.all %}
-                                    <span>{{ talent.name }}</span>, 
+                                    <span>{{ talent.name }}</span>,
+                                {% empty %}
+                                    <span>Not Available</span> 
                                 {% endfor %}
                             </td>
                         </tr>

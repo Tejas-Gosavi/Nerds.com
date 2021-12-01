@@ -82,7 +82,7 @@ class Cart:
             # update subtotal and count
             self.cart["subtotal"] += comic.price
             self.cart["count"] += 1
-            print(self.cart)
+            # print(self.cart)
 
             # if user is loggedin then
             if loggedInStatus:
@@ -109,7 +109,7 @@ class Cart:
 
         # get comic id from comic
         comicId = comic.id
-        print(self.cart, comicId)
+        # print(self.cart, comicId)
 
         # if that id is in current cart then
         if str(comicId) in self.cart["cartItems"]:
