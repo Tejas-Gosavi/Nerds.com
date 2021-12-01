@@ -26,7 +26,7 @@
     <!-- <li><a href="#license">License</a></li> -->
   </ol>
 </details>
-<br />
+
 
 ## About The Project
 <div id="about-the-project">
