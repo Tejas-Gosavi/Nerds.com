@@ -14,6 +14,8 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
+      <a href="#about-the-project">About The Project</a></li>
+    <li>
       <a href="#built-with">Built With</a>
     </li>
     <li>
@@ -26,9 +28,17 @@
 </details>
 <br />
 
+## About The Project
+<div id="about-the-project">
+
 ![](screenshots/screenshot1.png)
 
+* Integrated Razorpay payment gateway.
+* You can add to cart without login and after login automatic cart is updated.
+* Search and filter for commics, adding to wishlist.
+* Email confirmation on user sign up etc.
 
+</div>
 
 <!-- ABOUT THE PROJECT -->
 <div id="built-with">
@@ -42,7 +52,7 @@
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-</div>
+</div> 
 
 
 
@@ -105,8 +115,11 @@ This is list of resources i find helpful and would like to give credit to.
 
 * [ Django documentation ](https://docs.djangoproject.com/en/3.2/)
 * [ bootswatch.com - Free Bootstrap theme ](https://bootswatch.com/)
+* [ GitHub README Template ](https://github.com/othneildrew/Best-README-Template)
+* [ DC comics ](https://www.dccomics.com/comics)
+* [ Marvel comics ](https://www.marvel.com/comics)
 * [ StackOverflow - The G.O.A.T](https://stackoverflow.com/)
-
+* All images used are of the respective brands.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 </div>
