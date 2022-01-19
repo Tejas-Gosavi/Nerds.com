@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_list_or_404, get_object_or_404, render
+from django.core.paginator import Paginator
 
 from .filters import ComicsFilter, VolumesFilter
 from .models import Brand, Comic, ComicType, Tag, Volume
@@ -13,7 +14,12 @@ def all_comics(request):
 
     # get all comics which are active/available and return them in context
     comics = Comic.objects.filter(is_active=True)
-    context["products"] = comics
+    paginator_obj = Paginator(comics, 10)
+    current_page = request.GET.get('pages', 1)
+
+    context["products"] = paginator_obj.get_page(current_page)
+    context["paginator"] = paginator_obj
+    context["current_page"] = int(current_page)
     return render(request, "home.html", context=context)
 
 
@@ -35,8 +41,13 @@ def all_volumes(request):
 
     # else return them in context
     else:
+        paginator_obj = Paginator(volumes_filter.qs, 5)
+        current_page = request.GET.get('pages', 1)
+
         context["search_form"] = volumes_filter
-        context["products"] = volumes_filter.qs
+        context["products"] = paginator_obj.get_page(current_page)
+        context["paginator"] = paginator_obj
+        context["current_page"] = int(current_page)
         return render(request, "volumes_search.html", context=context)
 
 
@@ -55,7 +66,12 @@ def comics_brand(request, brand_slug):
 
     # else return them in context
     else:
-        context["products"] = comics
+        paginator_obj = Paginator(comics, 10)
+        current_page = request.GET.get('pages', 1)
+
+        context["products"] = paginator_obj.get_page(current_page)
+        context["paginator"] = paginator_obj
+        context["current_page"] = int(current_page)
         return render(request, "home.html", context=context)
 
 
@@ -76,7 +92,12 @@ def comics_type(request, comic_type_slug):
 
     # else return them in context
     else:
-        context["products"] = comics
+        paginator_obj = Paginator(comics, 10)
+        current_page = request.GET.get('pages', 1)
+
+        context["products"] = paginator_obj.get_page(current_page)
+        context["paginator"] = paginator_obj
+        context["current_page"] = int(current_page)
         return render(request, "home.html", context=context)
 
 
@@ -157,9 +178,14 @@ def comics_search(request):
 
     # else return them in context
     else:
-        context["search_form"] = comics_filter
-        context["products"] = comics_filter.qs
+        paginator_obj = Paginator(comics_filter.qs, 3)
+        current_page = request.GET.get('pages', 1)
+
         context["search"] = True
+        context["search_form"] = comics_filter
+        context["products"] = paginator_obj.get_page(current_page)
+        context["paginator"] = paginator_obj
+        context["current_page"] = int(current_page)
         return render(request, "search.html", context=context)
 
 
@@ -178,7 +204,12 @@ def comics_tag(request, tag_slug):
 
     # else return them in context
     else:
-        context["products"] = comics
+        paginator_obj = Paginator(comics, 10)
+        current_page = request.GET.get('pages', 1)
+
+        context["products"] = paginator_obj.get_page(current_page)
+        context["paginator"] = paginator_obj
+        context["current_page"] = int(current_page)
         return render(request, "home.html", context=context)
 
 

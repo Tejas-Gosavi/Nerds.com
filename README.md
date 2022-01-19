@@ -35,8 +35,8 @@
 
 * Integrated Razorpay payment gateway.
 * You can add to cart without login and after login automatic cart is updated.
-* Search and filter for commics, adding to wishlist.
-* Email confirmation on user sign up etc.
+* Added Functionality like Search, filter and Pagination, adding to wishlist.
+* Email confirmation on user sign up, etc.
 
 </div>
 
