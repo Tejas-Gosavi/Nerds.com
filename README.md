@@ -33,10 +33,10 @@
 
 ![](screenshots/screenshot1.png)
 
-* Integrated Razorpay payment gateway.
-* You can add to cart without login and after login automatic cart is updated.
-* Added Functionality like Search, filter and Pagination, adding to wishlist.
-* Email confirmation on user sign up, etc.
+* Improved online payment services by Integrating Razorpay payment gateway.
+* Developed Dynamic cart i.e. Add to cart without login and after login automatic cart updation.
+* Coded functionalities for Search, Filter, Pagination, Wishlist, Email confirmation on user sign up, etc.
+* Tech used - Django, SQLite, jQuery, Bootstrap.
 
 </div>
 
