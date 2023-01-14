@@ -8,20 +8,25 @@ from django.core.paginator import Paginator
 from .filters import ComicsFilter, VolumesFilter
 from .models import Brand, Comic, ComicType, Tag, Volume
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
+@api_view(['POST'])
 def all_comics(request):
-    context = {}
+    data = {}
 
     # get all comics which are active/available and return them in context
-    comics = Comic.objects.filter(is_active=True)
-    paginator_obj = Paginator(comics, 10)
-    current_page = request.GET.get('pages', 1)
+    comics = Comic.objects.filter(is_active=True).values()
+    # paginator_obj = Paginator(comics, 10)
+    # current_page = request.data.get('pages', 1)
 
-    context["products"] = paginator_obj.get_page(current_page)
-    context["paginator"] = paginator_obj
-    context["current_page"] = int(current_page)
-    return render(request, "home.html", context=context)
-
+    # data["products"] = paginator_obj.get_page(current_page)
+    # data["paginator"] = paginator_obj
+    # data["current_page"] = int(current_page)
+    data["comics"] = comics
+    data["brands"] = Brand.objects.filter(brand_to_feature=True).values()
+    data["comic_types"] = ComicType.objects.filter(comic_type_to_feature=True).values()
+    return Response({"status": "Success", "data": data , "msg": "", "code": 0})
 
 def all_volumes(request):
     context = {}

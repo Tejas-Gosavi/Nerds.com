@@ -15,11 +15,21 @@ from .forms import UserRegistrationForm
 from .models import User
 from .tokens import account_activation_token
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import UserSerializer
+
+@api_view(['POST'])
+def get_user(request):
+    instance = User.objects.all().first()
+    print(instance)
+    data = UserSerializer(instance).data
+    return Response(data)
 
 def profile(request):
 
     # if user is authenticated then
-    if request.user.is_authenticated:
+    # if request.user.is_authenticated:
 
         # show his/her profile
         user = User.objects.get(email=str(request.user))
@@ -33,8 +43,8 @@ def profile(request):
         return render(request, "profile.html", context=context)
 
     # else redirect to authentication
-    else:
-        return redirect("account:authenticate")
+    # else:
+    #     return redirect("account:authenticate")
 
 
 def authentication(request):
@@ -49,24 +59,24 @@ def authentication(request):
     else:
         return render(request, "authenticate.html")
 
-
-def login_account(request):
+@api_view(['POST'])
+def userLogin(request):
 
     # if user is logged in then
-    if request.user.is_authenticated:
+    # if request.user.is_authenticated:
 
-        # redirect user to his/her profile
-        return redirect("account:profile")
+    #     # redirect user to his/her profile
+    #     return redirect("account:profile")
 
-    # else if user is not logged in
-    else:
+    # # else if user is not logged in
+    # else:
 
-        # if reuqest is an ajax request and method is POST then
-        if request.is_ajax() and request.method == "POST":
+    #     # if reuqest is an ajax request and method is POST then
+    #     if request.is_ajax() and request.method == "POST":
 
             # get user email and password
-            email = request.POST.get("email")
-            password = request.POST.get("password")
+            email = request.data.get("email")
+            password = request.data.get("password")
 
             # get user object from database
             user = User.objects.filter(email=email)
@@ -75,7 +85,7 @@ def login_account(request):
             if not user.exists():
 
                 # don't log in and return 3
-                return JsonResponse({"logInCode": 3})
+                return Response({"status": "Fail", "data": [], "msg": "Wrong Email", "code": 1})
 
             # else if user is in our database then
             else:
@@ -92,27 +102,28 @@ def login_account(request):
                     if user == None:
 
                         # don't log in and return 2
-                        return JsonResponse({"logInCode": 2})
+                        return Response({"status": "Fail", "data": [], "msg": "Wrong Password", "code": 2})
 
                     # if password is correct then
                     else:
 
                         # update cart, log in user and return 0
-                        cart = Cart(request)
-                        cart.add_after_login(user)
-                        login(request, user)
-                        return JsonResponse({"logInCode": 0})
+                        # cart = Cart(request)
+                        # cart.add_after_login(user)
+                        # login(request, user)
+                        data = UserSerializer(user).data
+                        return Response({"status": "Success", "data": data, "msg": "Logged in successfully", "code": 0})
 
                 # if user is not active then
                 else:
 
                     # Incase account is deleted or account activation failed then this case happens
                     # don't log in and return 1
-                    return JsonResponse({"logInCode": 1})
+                    return Response({"status": "Fail", "data": [], "msg": "Account is deleted or not activated", "code": 3})
 
-        # else redirect to authentication
-        else:
-            return redirect("account:authenticate")
+        # # else redirect to authentication
+        # else:
+        #     return redirect("account:authenticate")
 
 
 def logout_account(request):
@@ -261,31 +272,67 @@ def delete_account(request):
     else:
         return redirect("account:authenticate")
 
-
-def save_personalData(request):
+@api_view(['POST'])
+def saveUserPersonalData(request):
 
     # if user is logged in then
-    if request.user.is_authenticated:
+    # if request.user.is_authenticated:
 
         # if request is an ajax request and method is POST then
-        if request.is_ajax() and request.method == "POST":
-
-            # get user obejct, save/upadte old personal data with new, save user object and return 0
-            user = User.objects.get(email=str(request.user))
-            user.first_name = request.POST.get("firstName")
-            user.last_name = request.POST.get("lastName")
-            user.phone_number = request.POST.get("phoneNumber")
+        if request.method == "POST":
+            email = request.data.get("email")
+            user = User.objects.get(email=email)
+            user.first_name = request.data.get("first_name")
+            user.last_name = request.data.get("last_name")
+            user.phone_number = request.data.get("phone_number")
             user.save()
-            return JsonResponse({"savePerosnalDataCode": 0})
+            return Response({"status": "Success", "data": user.getPersonalData(), "msg": "", "code": 0})
+        else:
+            
+            # get user obejct, save/upadte old personal data with new, save user object and return 0
+            # user = User.objects.get(email=str(request.user))
+            # user.first_name = request.POST.get("firstName")
+            # user.last_name = request.POST.get("lastName")
+            # user.phone_number = request.POST.get("phoneNumber")
+            # user.save()
+            return Response({"status": "Fail", "data": [], "msg": "Wrong HTTP Method", "code": 1})
+
+        # else return to authentication
+        # else:
+        #     return redirect("account:authenticate")
+
+    # else return to authentication
+    # else:
+    #     return redirect("account:authenticate")
+
+@api_view(['POST'])
+def saveUserAddress(request):
+
+    # if user is logged in then
+    # if request.user.is_authenticated:
+
+        # if request is an ajax request and method is POST then
+        if request.method == "POST":
+
+            # get user object, update old address fields with new, save user obejct and return 0
+            email = request.data.get("email")
+            user = User.objects.get(email=email)
+            user.building_name = request.data.get("building_name")
+            user.street_name = request.data.get("street_name")
+            user.landmark = request.data.get("landmark")
+            user.town_city = request.data.get("town_city")
+            user.state = request.data.get("state")
+            user.district = request.data.get("district")
+            user.save()
+            return Response({"status": "Success", "data": user.getAddress(), "msg": "", "code": 0})
 
         # else return to authentication
         else:
-            return redirect("account:authenticate")
+            return Response({"status": "Fail", "data": [], "msg": "Wrong HTTP Method", "code": 1})
 
     # else return to authentication
-    else:
-        return redirect("account:authenticate")
-
+    # else:
+    #     return redirect("account:authenticate")
 
 def save_changePassword(request):
 
@@ -323,34 +370,6 @@ def save_changePassword(request):
                 # else both passwords don't match and return 4
                 else:
                     return JsonResponse({"changePasswordCode": 4})
-
-        # else return to authentication
-        else:
-            return redirect("account:authenticate")
-
-    # else return to authentication
-    else:
-        return redirect("account:authenticate")
-
-
-def save_shippingAddress(request):
-
-    # if user is logged in then
-    if request.user.is_authenticated:
-
-        # if request is an ajax request and method is POST then
-        if request.is_ajax() and request.method == "POST":
-
-            # get user object, update old address fields with new, save user obejct and return 0
-            user = User.objects.get(email=str(request.user))
-            user.building_name = request.POST.get("building_name")
-            user.street_name = request.POST.get("street_name")
-            user.landmark = request.POST.get("landmark")
-            user.town_city = request.POST.get("town_city")
-            user.state = request.POST.get("state")
-            user.district = request.POST.get("district")
-            user.save()
-            return JsonResponse({"shippingAddressCode": 0})
 
         # else return to authentication
         else:

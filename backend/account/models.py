@@ -12,9 +12,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     first_name = models.CharField(max_length=20, blank=True)
     last_name = models.CharField(max_length=20, blank=True)
+    phone_number = models.CharField(max_length=10, blank=True)
 
     # Delivery details
-    phone_number = models.CharField(max_length=10, blank=True)
     building_name = models.CharField(max_length=150, blank=True)
     street_name = models.CharField(max_length=150, blank=True)
     landmark = models.CharField(max_length=50, blank=True)
@@ -40,6 +40,30 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    def getPersonalData(self):
+        return {
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "phone_number": self.phone_number
+        }
+    
+    def setPersonalData(self, obj):
+        print(self, obj)
+        self.first_name = obj.first_name
+        self.last_name = obj.last_name
+        self.phone_number = obj.phone_number
+        self.save(self)
+        
+    def getAddress(self):
+        return {
+            "building_name": self.building_name,
+            "street_name": self.street_name,
+            "landmark": self.landmark,
+            "town_city": self.town_city,
+            "district": self.district,
+            "state": self.state,
+        }
 
     def email_user(self, subject, message):
         send_mail(

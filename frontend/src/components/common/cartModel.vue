@@ -1,0 +1,65 @@
+<script setup lang="ts">
+</script>
+
+<template>
+    <div class="modal fade round-0" id="exampleModal">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your Cart</h5>
+                </div>
+                <div class="modal-body py-2">
+                    <div class="row p-1">
+                        <div class="col" id="cartList">
+                            <!-- {% if cart.cart.cartItems|length == 0 %} -->
+                                <h5 class="text-center">Your cart is empty</h5>
+                            <!-- {% else %} -->
+                            <!-- {% for id, product in cart.cart.cartItems.items %}  -->
+                            <div class="row p-2" id="">
+                                <div class="col offset-sm-1">
+                                    <!-- <img src="/media" id="product-img" alt="product" -->
+                                        <!-- style="height: inherit; width: inherit;"> -->
+                                </div>
+                                <div class="col-8">
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <div class="row">
+                                                <div class="col-sm-6 col-8">
+                                                    <!-- <h6 id="product-title">{{ product.title }}</h6> -->
+                                                </div>
+                                                <div class="col-sm-6 col-12">
+                                                    <!-- &#8377;<h6 id="product-price">{{ product.price }}</h6> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="row">
+                                                <div class="col text-center">
+                                                    <!-- <span class="btn p-0 cartRemove" id="remove-{{ id }}">
+                                                        <i class="bi bi-x-lg text-danger"></i>
+                                                    </span> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- {% endfor %}
+                            {% endif %} -->
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-end fw-bold">
+                        Total: &#8377;
+                        <!-- <span class="subtotal" id="cartSubtotal">{{ cart.cart.subtotal }}</span> -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <RouterLink :to="{ name: 'checkout' }" class="btn btn-primary p-2" type="button"
+                        id="checkoutBtn">Checkout</RouterLink>
+                    <button type="button" class="btn btn-secondary p-2" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

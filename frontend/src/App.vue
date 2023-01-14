@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router';
+import Navbar from '@/components/common/navbar.vue';
+import Paginator from '@/components/common/paginator.vue';
+import CartModel from '@/components/common/cartModel.vue';
+
 </script>
 
 <template>
-  <nav>
-    <RouterLink to="/">Home</RouterLink>
-    <RouterLink to="/about">About</RouterLink>
-  </nav>
-  <RouterView />
+  	<Navbar />
+	<CartModel />
+	<main class="container pt-4">
+		<div class="pt-5" id="content">
+			<RouterView />
+			<Paginator />
+		</div>
+	</main>
 </template>
 
 <style>

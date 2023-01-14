@@ -20,9 +20,10 @@ from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("cart/", include("cart.urls", namespace="cart")),
+    # path("cart/", include("cart.urls", namespace="cart")),
     path("", include("comic.urls", namespace="comic")),
     path("account/", include("account.urls", namespace="account")),
+    path('api/', include('rest_framework.urls'))
 ]
 
 if settings.DEBUG:

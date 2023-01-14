@@ -1,9 +1,116 @@
 /* @import './base.css'; */
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+body {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    color: #5a5a5a;
+}
 
-  font-weight: normal;
+html {
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+/* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+/* Carousel base class */
+.carousel {
+    margin-bottom: 4rem;
+}
+
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+    bottom: 3rem;
+    z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel-item {
+    height: 30rem;
+}
+
+.carousel-item>img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    height: 30rem;
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+.dropdown-large {
+    padding: 1rem;
+}
+
+/* ============ desktop view ============ */
+@media all and (min-width: 992px) {
+    .dropdown-large {
+        min-width: 500px;
+    }
+}
+
+/* ============ desktop view .end// ============ */
+.dropdown-toggle::after {
+    display: none;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+
+@media (min-width: 768px) {
+    .navbar-expand-md .navbar-nav .dropdown-menu {
+        position: absolute;
+        width: max-content;
+    }
+}
+
+.invalid,
+.invalid:focus {
+    box-shadow: none;
+    border: 3px solid #d9534f;
+}
+
+.invalid-text,
+.invalid-email,
+.invalid-email2,
+.invalid-password,
+.invalid-password2,
+.invalid-oldPassword,
+.invalid-newPassword,
+.invalid-newPassword2,
+.invalid-newPassword3 {
+    display: none;
+    width: 100%;
+    margin-top: .25rem;
+    font-size: .875em;
+    color: #d9534f;
+}
+
+.btn:focus,
+.btn:active,
+.accordion-button:focus,
+.accordion-button:active {
+    box-shadow: none;
 }
