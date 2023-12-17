@@ -4,9 +4,9 @@ import router from '@/router';
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
 import axios from 'axios';
-import { useNerdsStore } from '@/stores/index';
+import { useUserStore } from '@/stores/user.store';
 
-const store = useNerdsStore();
+const store = useUserStore();
 
 onBeforeMount(() => {
     if (store.isUserLoggedIn()) {

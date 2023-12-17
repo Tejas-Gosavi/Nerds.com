@@ -3,12 +3,12 @@ import { onBeforeMount } from 'vue';
 import router from '@/router';
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
-import { useNerdsStore } from '@/stores/index';
+import { useUserStore } from '@/stores/user.store';
 import ProfileSidebar from '../common/profileSidebar.vue';
 import statesDistricts from './statesDistricts.json';
 import axios from 'axios';
 
-const store = useNerdsStore();
+const store = useUserStore();
 
 const states: string[] = statesDistricts.states;
 const unionStates: string[] = statesDistricts.unionStates;

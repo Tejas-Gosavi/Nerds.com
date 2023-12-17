@@ -55,55 +55,61 @@ def all_volumes(request):
         context["current_page"] = int(current_page)
         return render(request, "volumes_search.html", context=context)
 
-
+@api_view(['POST'])
 def comics_brand(request, brand_slug):
-    context = {}
+    data = {}
 
     # get all comics of respective brand, which are active/available
-    comics = Comic.objects.filter(brand__brand_slug=brand_slug, is_active=True)
+    comics = Comic.objects.filter(brand__brand_slug=brand_slug, is_active=True).values()
 
     # if no comics present of respective brand then
     if not comics:
 
         # return 404 error page
-        context["error"] = "Brand you are requesting not found!"
-        return render(request, "404.html", context=context)
+        return Response({"status": "Fail", "data": [] , 
+            "msg": "Brand you are requesting not found!", "code": 1}) 
 
     # else return them in context
     else:
-        paginator_obj = Paginator(comics, 10)
-        current_page = request.GET.get('pages', 1)
+        # paginator_obj = Paginator(comics, 10)
+        # current_page = request.GET.get('pages', 1)
 
-        context["products"] = paginator_obj.get_page(current_page)
-        context["paginator"] = paginator_obj
-        context["current_page"] = int(current_page)
-        return render(request, "home.html", context=context)
+        # context["products"] = paginator_obj.get_page(current_page)
+        # context["paginator"] = paginator_obj
+        # context["current_page"] = int(current_page)
+        data["comics"] = comics
+        data["brands"] = Brand.objects.filter(brand_to_feature=True).values()
+        data["comic_types"] = ComicType.objects.filter(comic_type_to_feature=True).values()
+        return Response({"status": "Success", "data": data , "msg": "", "code": 0})
 
-
+@api_view(['POST'])
 def comics_type(request, comic_type_slug):
-    context = {}
+    data = {}
 
     # get all comics of respective comic type, which are active/available
     comics = Comic.objects.filter(
         comic_type__comic_type_slug=comic_type_slug, is_active=True
-    )
+    ).values()
 
     # if no comics present of respective comic type then
     if not comics:
 
         # return 404 error page
-        context["error"] = "Comics with Comic type you are requesting not found!"
-        return render(request, "404.html", context=context)
+        return Response({"status": "Fail", "data": [] , 
+            "msg": "Comics with Comic type you are requesting not found!", "code": 1})
 
     # else return them in context
     else:
-        paginator_obj = Paginator(comics, 10)
-        current_page = request.GET.get('pages', 1)
+        # paginator_obj = Paginator(comics, 10)
+        # current_page = request.GET.get('pages', 1)
 
-        context["products"] = paginator_obj.get_page(current_page)
-        context["paginator"] = paginator_obj
-        context["current_page"] = int(current_page)
-        return render(request, "home.html", context=context)
+        # context["products"] = paginator_obj.get_page(current_page)
+        # context["paginator"] = paginator_obj
+        # context["current_page"] = int(current_page)
+        data["comics"] = comics
+        data["brands"] = Brand.objects.filter(brand_to_feature=True).values()
+        data["comic_types"] = ComicType.objects.filter(comic_type_to_feature=True).values()
+        return Response({"status": "Success", "data": data , "msg": "", "code": 0})
 
 
 def comics_detail(request, **kwargs):

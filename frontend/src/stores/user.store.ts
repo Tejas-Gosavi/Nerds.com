@@ -1,14 +1,12 @@
 import { defineStore } from 'pinia';
 import { useStorage } from '@vueuse/core';
-import type User from './user.interface';
+import type User from '@/interface/user.interface';
 
-export const useNerdsStore = defineStore('nerds', () => {
+export const useUserStore = defineStore('users', () => {
 	const url: string = "http://127.0.0.1:8000";
-	const temp: User = {};
+	const tempUser: User = {};
 	const login = useStorage('login', false);
-	const user = useStorage('user', temp);
-	const brands = useStorage('brands', {});
-	const types = useStorage('types', {});
+	const user = useStorage('user', tempUser);
 	
 	const isUserLoggedIn = () => {
 		return login.value;

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ComicGrid from '../common/comicGrid.vue';
+
 </script>
 
 <template>
@@ -67,4 +69,6 @@
             $("#id_comic_type")[0][0].text = "Choose Comic Type";
         });
     </script> -->
+
+    <ComicGrid></ComicGrid>
 </template>

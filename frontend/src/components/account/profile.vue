@@ -3,11 +3,11 @@ import { onBeforeMount } from 'vue';
 import router from '@/router';
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
-import { useNerdsStore } from '@/stores/index';
+import { useUserStore } from '@/stores/user.store';
 import ProfileSidebar from '../common/profileSidebar.vue';
 import axios from 'axios';
 
-const store = useNerdsStore();
+const store = useUserStore();
 
 const personalDataSchema = yup.object({
     first_name: yup.string().required('First name is required'),

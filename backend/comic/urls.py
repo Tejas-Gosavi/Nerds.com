@@ -8,8 +8,8 @@ urlpatterns = [
     path("", views.all_comics, name="all_comics"),
     # path("volumes", views.all_volumes, name="all_volumes"),
     # path("search", views.comics_search, name="comics_search"),
-    # path("brand/<slug:brand_slug>", views.comics_brand, name="comics_brand"),
-    # path("type/<slug:comic_type_slug>", views.comics_type, name="comics_type"),
+    path("brand/<slug:brand_slug>", views.comics_brand, name="comics_brand"),
+    path("type/<slug:comic_type_slug>", views.comics_type, name="comics_type"),
     # path("volume/<slug:volume_slug>", views.comics_volume, name="comics_volume"),
     # path(
     #     "<slug:brand_slug>/<slug:comic_type_slug>/<slug:slug>",

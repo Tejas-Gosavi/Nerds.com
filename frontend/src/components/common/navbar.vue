@@ -1,11 +1,23 @@
 <script setup lang="ts">
-import { useNerdsStore } from '@/stores/index';
+import { onBeforeMount } from 'vue';
+import { useUserStore } from '@/stores/user.store';
+import { useComicStore } from '@/stores/comic.store';
+import type { Brand, comicType } from '@/interface/comic.interface';
 
-const store = useNerdsStore();
+const userStore = useUserStore();
+const comicStore = useComicStore();
 
-const isUserLoggedIn = store.isUserLoggedIn();
+let brands: Brand[] = [];
+let comicTypes: comicType[] = [];
+
+onBeforeMount(() => {
+    brands = comicStore.getBrands();
+    comicTypes = comicStore.getComicTypes();
+})
+
+const isUserLoggedIn = userStore.isUserLoggedIn();
 const logout = () => {
-    store.setUser(false, {});
+    userStore.setUser(false, {});
 }
 </script>
 
@@ -26,8 +38,13 @@ const logout = () => {
                                 <div class="col">
                                     <h6 class="title">By Brand</h6>
                                     <ul class="list-unstyled" aria-labelledby="navbarDropdown">
-                                        <li><a class="dropdown-item"
-                                                href="#">brand 1</a>
+                                        <li v-for="brand in brands">
+                                            <RouterLink class="dropdown-item" 
+                                                :to="{ name: 'brand', 
+                                                        params: { brand: brand.brand_slug } 
+                                                }">
+                                                {{brand.brand_title}}
+                                            </RouterLink>
                                         </li>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Any many more...</a>
@@ -36,8 +53,13 @@ const logout = () => {
                                 <div class="col pt-sm-0 pt-3">
                                     <h6 class="title">By Type</h6>
                                     <ul class="list-unstyled">
-                                        <li><a class="dropdown-item"
-                                                href="#">type 1</a>
+                                        <li v-for="comicType in comicTypes">
+                                            <RouterLink class="dropdown-item"
+                                                :to="{ name: 'type', 
+                                                        params: { type: comicType.comic_type_slug } 
+                                                }">
+                                                {{comicType.comic_type_title}}
+                                            </RouterLink>
                                         </li>
                                     </ul>
                                 </div>
@@ -45,7 +67,8 @@ const logout = () => {
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link ps-sm-0 ps-3" href="#">Volumes</a>
+                        <RouterLink class="nav-link ps-sm-0 ps-3" 
+                            :to="{ name: 'volumes' }">Volumes</RouterLink>
                     </li>
                     <li class="nav-item">
                         <RouterLink class="nav-link ps-sm-0 ps-3" :to="{ name: 'searchComics'}">Search <i
